@@ -103,9 +103,22 @@ export default function LoginPage() {
         {/* Demo hint */}
         <div className="mt-4 p-3 bg-zinc-100 dark:bg-[#18181C] border border-zinc-200 dark:border-[#151518] rounded-lg text-center">
           <p className="text-xs text-muted-foreground">
-            Demo: <span className="font-mono text-foreground">demo@example.com</span> /{' '}
+            Demo: <span className="font-mono text-foreground">alex@demoagency.com</span> /{' '}
             <span className="font-mono text-foreground">demo123</span>
           </p>
+        </div>
+
+        {/* Buy section */}
+        <div className="mt-4 p-4 bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-[#151518] rounded-xl space-y-3">
+          <p className="text-xs text-muted-foreground text-center">Want this for your agency?</p>
+          <div className="flex gap-2">
+            <a href="https://muadme.gumroad.com/l/FreelancerOS" target="_blank" rel="noopener noreferrer" className="flex-1">
+              <Button size="sm" className="w-full h-8 text-xs">$29/mo — Subscribe</Button>
+            </a>
+            <a href="https://muadme.gumroad.com/l/Freelancer" target="_blank" rel="noopener noreferrer" className="flex-1">
+              <Button variant="outline" size="sm" className="w-full h-8 text-xs">$149 — Buy Code</Button>
+            </a>
+          </div>
         </div>
       </div>
     </div>

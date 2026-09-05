@@ -82,16 +82,20 @@ export default function Home() {
         </p>
         <div className="flex items-center justify-center gap-3">
           <Link
-            href="/register"
+            href="https://muadme.gumroad.com/l/FreelancerOS"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all duration-150"
           >
-            Start Free <ArrowRight className="w-4 h-4" />
+            Get Started — $29/mo <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            href="/login"
+            href="https://muadme.gumroad.com/l/Freelancer"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 border border-zinc-200 dark:border-zinc-700 rounded-lg font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all duration-150"
           >
-            View Demo
+            Buy Source Code
           </Link>
         </div>
       </section>
@@ -126,10 +130,12 @@ export default function Home() {
           Join thousands of freelancers who manage their business with SaaS App.
         </p>
         <Link
-          href="/register"
+          href="https://muadme.gumroad.com/l/FreelancerOS"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all duration-150"
         >
-          Get Started Free <ArrowRight className="w-4 h-4" />
+          Get Started — $29/mo <ArrowRight className="w-4 h-4" />
         </Link>
       </section>
 
