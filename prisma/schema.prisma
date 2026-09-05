@@ -1,0 +1,555 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("USER")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  workspace WorkspaceUser[]
+
+  clients       Client[]
+  leads         Lead[]
+  projects      Project[]
+  tasks         Task[]
+  proposals     Proposal[]
+  contracts     Contract[]
+  invoices      Invoice[]
+  payments      Payment[]
+  expenses      Expense[]
+  timeEntries   TimeEntry[]
+  files         File[]
+  activities    Activity[]
+  notifications Notification[]
+  messages      Message[]
+  Template      Template[]
+  Automation    Automation[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Workspace {
+  id         String   @id @default(cuid())
+  name       String
+  slug       String   @unique
+  logo       String?
+  address    String?
+  phone      String?
+  email      String?
+  website    String?
+  taxRate    Float    @default(0)
+  currency   String   @default("USD")
+  hourlyRate Float    @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  users         WorkspaceUser[]
+  clients       Client[]
+  leads         Lead[]
+  projects      Project[]
+  tasks         Task[]
+  proposals     Proposal[]
+  contracts     Contract[]
+  invoices      Invoice[]
+  payments      Payment[]
+  expenses      Expense[]
+  timeEntries   TimeEntry[]
+  files         File[]
+  activities    Activity[]
+  notifications Notification[]
+  messages      Message[]
+  templates     Template[]
+  automations   Automation[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceUser {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        String   @default("MEMBER")
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@map("workspace_users")
+}
+
+model Client {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  address     String?
+  website     String?
+  status      String   @default("ACTIVE")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  projects   Project[]
+  invoices   Invoice[]
+  proposals  Proposal[]
+  contracts  Contract[]
+  payments   Payment[]
+  files      File[]
+  activities Activity[]
+  messages   Message[]
+  Task       Task[]
+
+  @@map("clients")
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  status      String   @default("NEW")
+  source      String?
+  value       Float?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("leads")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String?
+  name        String
+  description String?
+  status      String    @default("ACTIVE")
+  priority    String    @default("MEDIUM")
+  budget      Float?
+  startDate   DateTime?
+  endDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id])
+
+  tasks       Task[]
+  milestones  Milestone[]
+  timeEntries TimeEntry[]
+  invoices    Invoice[]
+  expenses    Expense[]
+  files       File[]
+  activities  Activity[]
+  Proposal    Proposal[]
+  Contract    Contract[]
+  Message     Message[]
+
+  @@map("projects")
+}
+
+model Milestone {
+  id          String    @id @default(cuid())
+  projectId   String
+  name        String
+  status      String    @default("PENDING")
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("milestones")
+}
+
+model Task {
+  id             String    @id @default(cuid())
+  workspaceId    String
+  userId         String
+  projectId      String?
+  clientId       String?
+  name           String
+  description    String?
+  status         String    @default("TODO")
+  priority       String    @default("MEDIUM")
+  dueDate        DateTime?
+  startDate      DateTime?
+  completedAt    DateTime?
+  estimatedHours Float?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  timeEntries TimeEntry[]
+
+  @@map("tasks")
+}
+
+model TimeEntry {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  projectId   String?
+  taskId      String?
+  description String?
+  startTime   DateTime
+  endTime     DateTime?
+  duration    Int?
+  billable    Boolean   @default(true)
+  isRunning   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  task      Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  @@map("time_entries")
+}
+
+model Proposal {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String?
+  projectId   String?
+  name        String
+  content     String?
+  status      String    @default("DRAFT")
+  sentAt      DateTime?
+  viewedAt    DateTime?
+  acceptedAt  DateTime?
+  rejectedAt  DateTime?
+  expiresAt   DateTime?
+  total       Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  items ProposalItem[]
+
+  @@map("proposals")
+}
+
+model ProposalItem {
+  id          String   @id @default(cuid())
+  proposalId  String
+  name        String
+  description String?
+  quantity    Float    @default(1)
+  price       Float
+  createdAt   DateTime @default(now())
+
+  proposal Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@map("proposal_items")
+}
+
+model Contract {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String?
+  projectId   String?
+  name        String
+  content     String?
+  status      String    @default("DRAFT")
+  signedAt    DateTime?
+  sentAt      DateTime?
+  expiresAt   DateTime?
+  total       Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@map("contracts")
+}
+
+model Invoice {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String
+  projectId   String?
+  number      String
+  status      String    @default("DRAFT")
+  issueDate   DateTime  @default(now())
+  dueDate     DateTime
+  subtotal    Float     @default(0)
+  tax         Float     @default(0)
+  discount    Float     @default(0)
+  total       Float     @default(0)
+  paid        Float     @default(0)
+  paidAt      DateTime?
+  sentAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  items     InvoiceItem[]
+  payments  Payment[]
+  reminders InvoiceReminder[]
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  name        String
+  description String?
+  quantity    Float    @default(1)
+  price       Float
+  createdAt   DateTime @default(now())
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_items")
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  invoiceId   String?
+  clientId    String?
+  amount      Float
+  method      String?
+  reference   String?
+  note        String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoice   Invoice?  @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  @@map("payments")
+}
+
+model InvoiceReminder {
+  id        String   @id @default(cuid())
+  invoiceId String
+  type      String
+  sentAt    DateTime @default(now())
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_reminders")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  projectId   String?
+  category    String
+  name        String
+  amount      Float
+  date        DateTime
+  receipt     String?
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@map("expenses")
+}
+
+model File {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String?
+  projectId   String?
+  name        String
+  url         String
+  size        Int?
+  type        String?
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@map("files")
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  clientId    String?
+  projectId   String?
+  type        String
+  description String
+  metadata    String?
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@map("activities")
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  type        String
+  title       String
+  message     String
+  link        String?
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Message {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  userId       String
+  clientId     String?
+  projectId    String?
+  content      String
+  isFromClient Boolean  @default(false)
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@map("messages")
+}
+
+model Template {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  name        String
+  type        String
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("templates")
+}
+
+model Automation {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  name        String
+  trigger     String
+  action      String
+  enabled     Boolean  @default(true)
+  config      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("automations")
+}
