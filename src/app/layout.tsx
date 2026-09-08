@@ -13,8 +13,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'SaaS App',
-    template: '%s | SaaS App',
+    default: 'FreelancerOS',
+    template: '%s | FreelancerOS',
   },
   description: 'Complete commercial SaaS product',
   icons: {

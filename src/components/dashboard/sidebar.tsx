@@ -87,7 +87,7 @@ export function Sidebar() {
       <div className="px-4 py-3.5 border-b border-zinc-100 dark:border-[#151518]">
         <Link href="/dashboard" className="block">
           <span className="font-semibold text-base tracking-tight text-zinc-900 dark:text-white">
-            SaaS App
+            FreelancerOS
           </span>
         </Link>
       </div>
@@ -173,7 +173,7 @@ export function MobileNav() {
       <header className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-zinc-100 dark:border-[#151518] bg-white dark:bg-[#0A0A0D]">
         <Link href="/dashboard" className="flex items-center gap-2">
           <span className="font-semibold text-base tracking-tight text-zinc-900 dark:text-white">
-            SaaS App
+            FreelancerOS
           </span>
         </Link>
         <div className="flex items-center gap-1">

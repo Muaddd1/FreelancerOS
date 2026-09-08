@@ -50,9 +50,9 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center">
-              <span className="text-white dark:text-zinc-900 font-bold text-sm">SA</span>
+              <span className="text-white dark:text-zinc-900 font-bold text-sm">FO</span>
             </div>
-            <span className="font-semibold text-foreground">SaaS App</span>
+            <span className="font-semibold text-foreground">FreelancerOS</span>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -127,7 +127,7 @@ export default function Home() {
           Ready to streamline your workflow?
         </h2>
         <p className="text-muted-foreground mb-8">
-          Join thousands of freelancers who manage their business with SaaS App.
+          Join thousands of freelancers who manage their business with FreelancerOS.
         </p>
         <Link
           href="https://muadme.gumroad.com/l/FreelancerOS"
@@ -144,9 +144,9 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 py-8 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded bg-zinc-900 dark:bg-white flex items-center justify-center">
-              <span className="text-white dark:text-zinc-900 font-bold text-2xs">SA</span>
+              <span className="text-white dark:text-zinc-900 font-bold text-2xs">FO</span>
             </div>
-            <span className="text-sm font-medium text-muted-foreground">SaaS App</span>
+            <span className="text-sm font-medium text-muted-foreground">FreelancerOS</span>
           </div>
           <div className="flex items-center gap-6 text-xs text-muted-foreground">
             <Link href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
