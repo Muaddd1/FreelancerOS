@@ -1,5 +1,7 @@
 # Freelancer OS — Business Management SaaS
 
+**[Live demo](https://freelancer-os-gamma.vercel.app)** · **[Get it on Gumroad](https://muadme.gumroad.com/l/FreelancerOS)**
+
 > A complete commercial-grade platform for freelancers and agencies to manage clients, projects, invoices, time tracking, proposals, and payments.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
