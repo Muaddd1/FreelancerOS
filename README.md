@@ -128,9 +128,11 @@ Password: demo123
 ### Build for Production
 
 ```bash
-npm run build
+npm run build    # runs prisma generate, then next build
 npm run start
 ```
+
+Useful extras: `npm run db:studio` opens Prisma Studio to browse the database; `npm run lint` runs the Next.js linter.
 
 ---
 
