@@ -73,9 +73,9 @@ Freelancer OS is a full-stack SaaS application built for **freelancers** and **s
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
+| Framework | Next.js 14 (App Router) + React 18 |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS 3 |
 | UI Components | Radix UI + custom components |
 | Database | Prisma ORM |
 | Database (dev) | SQLite |
