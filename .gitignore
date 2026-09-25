@@ -49,6 +49,4 @@ next-env.d.ts
 # Misc
 *.log
 .vercelignore
-
-.vercel
 .env.vercel
