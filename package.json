@@ -1,6 +1,10 @@
 {
   "name": "complete-commercial-saas",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muaddd1/FreelancerOS.git"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
