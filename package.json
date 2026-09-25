@@ -6,6 +6,9 @@
     "url": "git+https://github.com/Muaddd1/FreelancerOS.git"
   },
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
