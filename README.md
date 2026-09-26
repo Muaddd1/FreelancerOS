@@ -91,7 +91,7 @@ Freelancer OS is a full-stack SaaS application built for **freelancers** and **s
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 18.17+ (Next.js 14's minimum)
 - npm or pnpm
 
 ### Installation
