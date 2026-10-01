@@ -68,5 +68,9 @@
     "prisma": "^5.22.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "author": "Mouad Sehli (https://muad-portfolio.vercel.app)",
+  "bugs": {
+    "url": "https://github.com/Muaddd1/FreelancerOS/issues"
   }
 }
