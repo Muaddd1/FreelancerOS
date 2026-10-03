@@ -2,6 +2,7 @@
   "name": "complete-commercial-saas",
   "version": "1.0.0",
   "description": "Freelancer management SaaS: clients, projects, invoices, proposals, contracts, time tracking, expenses, leads, analytics and automations.",
+  "license": "UNLICENSED",
   "homepage": "https://freelancer-os-gamma.vercel.app",
   "keywords": [
     "nextjs",
