@@ -2,6 +2,18 @@
   "name": "complete-commercial-saas",
   "version": "1.0.0",
   "description": "Freelancer management SaaS: clients, projects, invoices, proposals, contracts, time tracking, expenses, leads, analytics and automations.",
+  "keywords": [
+    "nextjs",
+    "react",
+    "typescript",
+    "prisma",
+    "next-auth",
+    "tailwindcss",
+    "saas",
+    "freelancer",
+    "invoices",
+    "crm"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Muaddd1/FreelancerOS.git"
