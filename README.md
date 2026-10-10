@@ -144,7 +144,9 @@ src/
 │   ├── (dashboard)/       # Authenticated dashboard routes
 │   ├── api/               # API routes
 │   ├── login/             # Login page
-│   └── register/          # Registration page
+│   ├── register/          # Registration page
+│   ├── privacy-policy/    # Privacy policy
+│   └── terms-of-service/  # Terms of service
 ├── components/
 │   ├── dashboard/          # Dashboard-specific (header, sidebar, command palette)
 │   └── ui/                # Reusable UI components (button, input, card, etc.)
