@@ -149,6 +149,10 @@ src/
 │   ├── dashboard/          # Dashboard-specific (header, sidebar, command palette)
 │   └── ui/                # Reusable UI components (button, input, card, etc.)
 └── lib/
+    ├── api.ts             # API route helpers
+    ├── auth.ts            # NextAuth configuration
+    ├── db.ts              # Prisma client
+    ├── validations.ts     # Zod schemas
     └── utils.ts           # Utility functions (formatCurrency, formatDate, etc.)
 
 prisma/
