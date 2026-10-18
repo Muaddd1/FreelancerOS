@@ -155,12 +155,6 @@ export function MobileNav() {
   const pathname = usePathname()
   const [open, setOpen] = React.useState(false)
 
-  const allNavItems = [
-    ...mainNav,
-    ...workNav,
-    ...manageNav,
-    ...toolsNav,
-  ]
 
   return (
     <>
