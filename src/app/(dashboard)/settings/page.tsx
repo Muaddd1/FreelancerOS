@@ -3,7 +3,6 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { DashboardHeader } from '@/components/dashboard'
-import { Button } from '@/components/ui/button'
 import { User, Building2, CreditCard, Shield, ArrowRight } from 'lucide-react'
 
 const settings = [

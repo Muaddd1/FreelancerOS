@@ -1,9 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { toast } from 'sonner'
 import { DashboardHeader } from '@/components/dashboard'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { DollarSign } from 'lucide-react'

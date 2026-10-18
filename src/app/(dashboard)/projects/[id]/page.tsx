@@ -8,9 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Edit, Trash2, DollarSign, Users, Clock, FileText } from 'lucide-react'
+import { ArrowLeft, Edit, Trash2, DollarSign, Clock, FileText } from 'lucide-react'
 
 export default function ProjectDetailPage() {
   const params = useParams()

@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Edit, Trash2, Printer, Download, FileText } from 'lucide-react'
+import { ArrowLeft, Edit, Trash2, Printer, Download } from 'lucide-react'
 
 export default function InvoiceDetailPage() {
   const params = useParams()
