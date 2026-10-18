@@ -133,7 +133,7 @@ async function main() {
     },
   })
 
-  const brightProject = await prisma.project.create({
+  await prisma.project.create({
     data: {
       workspaceId: workspace.id,
       userId: user.id,
