@@ -37,7 +37,6 @@ function applyTheme(theme: Theme) {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = React.useState<Theme>('system')
-  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
     // Read persisted theme
@@ -48,7 +47,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       applyTheme('system')
     }
-    setMounted(true)
 
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
