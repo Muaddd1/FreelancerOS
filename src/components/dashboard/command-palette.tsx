@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from 'cmdk'
 import { useRouter } from 'next/navigation'
-import { Search, Plus, LayoutDashboard, Users, FolderKanban, Receipt, FileText, Settings, Clock } from 'lucide-react'
+import { LayoutDashboard, Users, FolderKanban, Receipt, FileText, Settings, Clock } from 'lucide-react'
 
 const quickActions = [
   { label: 'New Client', icon: Users, href: '/clients/new' },

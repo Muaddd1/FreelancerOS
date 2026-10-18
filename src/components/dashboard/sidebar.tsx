@@ -3,12 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard, Users, UserPlus, FolderKanban, CheckSquare,
-  Calendar, Clock, FileText, FileCheck, Receipt, CreditCard,
-  DollarSign, BarChart3, MessageSquare, FolderOpen, Zap,
-  FileStack, Settings, ChevronDown, Plus, LogOut, X,
-} from 'lucide-react'
+import { LayoutDashboard, Users, UserPlus, FolderKanban, CheckSquare, Calendar, Clock, FileText, FileCheck, Receipt, CreditCard, DollarSign, BarChart3, MessageSquare, FolderOpen, Zap, FileStack, Settings, ChevronDown, LogOut, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
