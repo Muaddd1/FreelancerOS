@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
-import { DashboardHeader } from '@/components/dashboard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -13,7 +12,6 @@ import { ArrowLeft, Edit, Send, Download, CheckCircle } from 'lucide-react'
 
 export default function ContractDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const [contract, setContract] = React.useState<any>(null)
   const [loading, setLoading] = React.useState(true)
 
