@@ -52,7 +52,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handler = () => {
       const currentStored = localStorage.getItem('theme') as Theme | null
-      if (currentStored === 'system' || (!currentStored && theme === 'system')) {
+      if (!currentStored || currentStored === 'system') {
         applyTheme('system')
       }
     }
