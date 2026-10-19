@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { Resend } from 'resend'
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const WEBHOOK_SECRET = process.env.GUMROAD_WEBHOOK_SECRET
 
 function verifySignature(payload: string, signature: string): boolean {
   if (!WEBHOOK_SECRET) return true // skip in dev
-  const crypto = require('crypto')
-  const expected = crypto.createHmac('sha256', WEBHOOK_SECRET).update(payload).digest('hex')
-  return expected === signature
+  const expected = Buffer.from(createHmac('sha256', WEBHOOK_SECRET).update(payload).digest('hex'))
+  const given = Buffer.from(signature)
+  return given.length === expected.length && timingSafeEqual(given, expected)
 }
 
 export async function POST(req: Request) {
