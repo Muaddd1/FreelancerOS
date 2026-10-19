@@ -86,7 +86,7 @@ export default function TermsOfServicePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold">8. Disclaimer of Warranties</h2>
             <p className="text-muted-foreground">
-              THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND,
+              THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE” WITHOUT WARRANTIES OF ANY KIND,
               EXPRESS OR IMPLIED. WE DO NOT GUARANTEE THAT THE SERVICE WILL BE UNINTERRUPTED,
               SECURE, OR ERROR-FREE. WE DISCLAIM ALL WARRANTIES INCLUDING MERCHANTABILITY,
               FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
@@ -127,7 +127,7 @@ export default function TermsOfServicePage() {
             <h2 className="text-lg font-semibold">12. Modifications to Terms</h2>
             <p className="text-muted-foreground">
               We may modify these terms at any time. We will notify you of material changes
-              by posting the updated terms on this page with a new "Last updated" date.
+              by posting the updated terms on this page with a new “Last updated” date.
               Your continued use after changes constitutes acceptance of the new terms.
             </p>
           </section>
