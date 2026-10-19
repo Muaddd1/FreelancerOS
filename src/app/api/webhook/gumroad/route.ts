@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   }
 
   const data = JSON.parse(payload)
-  const { email, name, product_name, product_permalink } = data
+  const { email, name, product_permalink } = data
 
   if (!email) {
     return NextResponse.json({ error: 'No email' }, { status: 400 })
