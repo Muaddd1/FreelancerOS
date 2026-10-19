@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, UserPlus, FolderKanban, CheckSquare, Calendar, Clock, FileText, FileCheck, Receipt, CreditCard, DollarSign, BarChart3, MessageSquare, FolderOpen, Zap, FileStack, Settings, ChevronDown, LogOut, X } from 'lucide-react'
+import { LayoutDashboard, Users, UserPlus, FolderKanban, CheckSquare, Calendar, Clock, FileText, FileCheck, Receipt, CreditCard, DollarSign, BarChart3, MessageSquare, FolderOpen, Zap, FileStack, Settings, ChevronDown, LogOut, X, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 // Navigation groups
+type NavLink = { label: string; href: string; icon: LucideIcon }
+
 const mainNav = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Clients', href: '/clients', icon: Users },
@@ -42,7 +44,7 @@ const toolsNav = [
   { label: 'Templates', href: '/templates', icon: FileStack },
 ]
 
-function NavItem({ item, isActive }: { item: any; isActive: boolean }) {
+function NavItem({ item, isActive }: { item: NavLink; isActive: boolean }) {
   return (
     <Link
       href={item.href}
@@ -59,7 +61,7 @@ function NavItem({ item, isActive }: { item: any; isActive: boolean }) {
   )
 }
 
-function NavGroup({ label, items }: { label: string; items: any[] }) {
+function NavGroup({ label, items }: { label: string; items: NavLink[] }) {
   const pathname = usePathname()
   return (
     <div className="space-y-0.5">
