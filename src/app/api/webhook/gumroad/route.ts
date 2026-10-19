@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const isMembership = product_permalink?.includes('FreelancerOS')
   const isSourceCode = product_permalink?.includes('Freelancer')
 
-  const randomPassword = Math.random().toString(36).slice(-8)
+  const randomPassword = randomBytes(9).toString('base64url')
   const workspaceName = name ? name.replace(/\s+/g, '').toLowerCase() : email.split('@')[0]
 
   try {
