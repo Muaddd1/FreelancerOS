@@ -74,9 +74,10 @@ export async function POST(req: Request) {
     await sendLoginEmail(email, randomPassword, isMembership, isSourceCode)
 
     return NextResponse.json({ ok: true, userId: user.id })
-  } catch (err: any) {
+  } catch (err) {
     console.error('Webhook error:', err)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    // don't echo internal error details (e.g. Prisma messages) back to the caller
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 })
   }
 }
 
