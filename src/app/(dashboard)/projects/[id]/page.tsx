@@ -9,12 +9,13 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import type { ProjectDetail } from '@/types/api'
 import { ArrowLeft, Edit, Trash2, DollarSign, Clock, FileText } from 'lucide-react'
 
 export default function ProjectDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [project, setProject] = React.useState<any>(null)
+  const [project, setProject] = React.useState<ProjectDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -48,6 +49,8 @@ export default function ProjectDetailPage() {
     URGENT: 'bg-red-500',
   }
 
+  const taskCount = project.tasks?.length ?? 0
+  const progress = taskCount ? Math.round((project.tasks!.filter((t) => t.status === 'DONE').length / taskCount) * 100) : null
   const totalTime = project.timeEntries?.reduce((sum: number, t: any) => sum + (t.duration || 0), 0) ?? 0
   const totalBudget = project.budget || 0
   const totalExpenses = project.expenses?.reduce((sum: number, e: any) => sum + (e.amount || 0), 0) ?? 0
@@ -119,13 +122,13 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Progress */}
-      {project.progress !== undefined && (
+      {progress !== null && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Progress</span>
-            <span>{project.progress}%</span>
+            <span>{progress}%</span>
           </div>
-          <Progress value={project.progress} />
+          <Progress value={progress} />
         </div>
       )}
 
@@ -142,7 +145,7 @@ export default function ProjectDetailPage() {
             {project.tasks?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No tasks yet</p>
             ) : (
-              project.tasks?.map((task: any) => (
+              project.tasks?.map((task) => (
                 <div key={task.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
@@ -170,12 +173,12 @@ export default function ProjectDetailPage() {
             {project.timeEntries?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No time entries yet</p>
             ) : (
-              project.timeEntries?.map((entry: any) => (
+              project.timeEntries?.map((entry) => (
                 <div key={entry.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm font-medium">{entry.description || 'No description'}</p>
-                      <p className="text-xs text-muted-foreground">{formatDate(entry.date)}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(entry.startTime)}</p>
                     </div>
                     <span className="text-sm font-medium">{entry.duration}m</span>
                   </div>
@@ -190,7 +193,7 @@ export default function ProjectDetailPage() {
             {project.files?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No files yet</p>
             ) : (
-              project.files?.map((file: any) => (
+              project.files?.map((file) => (
                 <div key={file.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
