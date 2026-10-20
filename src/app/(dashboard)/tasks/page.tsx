@@ -10,6 +10,10 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { formatDate } from '@/lib/utils'
 import { Plus, Search, ListTodo } from 'lucide-react'
+import type { Project, Task } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
+
+type TaskRow = Jsonify<Task> & { project?: Jsonify<Project> | null }
 
 const priorityVariant: Record<string, 'secondary' | 'warning' | 'destructive'> = {
   LOW: 'secondary',
@@ -24,7 +28,7 @@ const statusVariant: Record<string, 'success' | 'warning' | 'secondary'> = {
 }
 
 export default function TasksPage() {
-  const [tasks, setTasks] = React.useState<any[]>([])
+  const [tasks, setTasks] = React.useState<TaskRow[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 
@@ -40,13 +44,15 @@ export default function TasksPage() {
     t.project?.name?.toLowerCase().includes(search.toLowerCase())
   )
 
-  const toggleTask = async (task: any) => {
+  const toggleTask = async (task: TaskRow) => {
     const newStatus = task.status === 'DONE' ? 'TODO' : 'DONE'
-    await fetch(`/api/tasks/${task.id}`, {
-      method: 'PATCH',
+    // the [id] route only implements PUT (a partial prisma update), not PATCH
+    const res = await fetch(`/api/tasks/${task.id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: newStatus }),
+      body: JSON.stringify({ status: newStatus, completedAt: newStatus === 'DONE' ? new Date().toISOString() : null }),
     })
+    if (!res.ok) return
     setTasks(tasks.map(t => t.id === task.id ? { ...t, status: newStatus } : t))
   }
 
