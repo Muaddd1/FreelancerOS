@@ -10,18 +10,22 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatDuration } from '@/lib/utils'
 import { Play, Square, Clock, Plus } from 'lucide-react'
+import type { Project, Task, TimeEntry } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
+
+type TimeEntryRow = Jsonify<TimeEntry> & { project?: Jsonify<Project> | null; task?: Jsonify<Task> | null }
 
 export default function TimePage() {
-  const [entries, setEntries] = React.useState<any[]>([])
+  const [entries, setEntries] = React.useState<TimeEntryRow[]>([])
   const [loading, setLoading] = React.useState(true)
   const [timerActive, setTimerActive] = React.useState(false)
   const [timerStart, setTimerStart] = React.useState<Date | null>(null)
   const [elapsed, setElapsed] = React.useState(0)
   const [form, setForm] = React.useState({ description: '', projectId: '', taskId: '' })
-  const [projects, setProjects] = React.useState<any[]>([])
+  const [projects, setProjects] = React.useState<Jsonify<Project>[]>([])
 
   React.useEffect(() => {
-    fetch('/api/time-entries').then(r => r.json()).then(d => { setEntries(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
+    fetch('/api/time').then(r => r.json()).then(d => { setEntries(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
     fetch('/api/projects').then(r => r.ok ? r.json() : []).then(setProjects).catch(() => {})
   }, [])
 
@@ -45,13 +49,20 @@ export default function TimePage() {
   const handleStopTimer = async () => {
     if (!timerStart) return
     setTimerActive(false)
-    const duration = Math.floor((Date.now() - timerStart.getTime()) / 1000)
-    const date = new Date().toISOString()
+    const endTime = new Date()
+    const duration = Math.max(1, Math.round((endTime.getTime() - timerStart.getTime()) / 60000)) // minutes, like formatDuration
     try {
-      const res = await fetch('/api/time-entries', {
+      const res = await fetch('/api/time', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, duration, date }),
+        body: JSON.stringify({
+          description: form.description || undefined,
+          projectId: form.projectId || undefined,
+          taskId: form.taskId || undefined,
+          startTime: timerStart.toISOString(),
+          endTime: endTime.toISOString(),
+          duration,
+        }),
       })
       if (res.ok) {
         const newEntry = await res.json()
@@ -75,15 +86,15 @@ export default function TimePage() {
     return `${h}:${m}:${s}`
   }
 
-  const groupedEntries = entries.reduce((acc: Record<string, any[]>, entry) => {
-    const date = new Date(entry.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+  const groupedEntries = entries.reduce((acc: Record<string, TimeEntryRow[]>, entry) => {
+    const date = new Date(entry.startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
     if (!acc[date]) acc[date] = []
     acc[date].push(entry)
     return acc
   }, {})
 
   const totalToday = entries
-    .filter(e => new Date(e.date).toDateString() === new Date().toDateString())
+    .filter(e => new Date(e.startTime).toDateString() === new Date().toDateString())
     .reduce((sum, e) => sum + (e.duration || 0), 0)
 
   if (loading) return <div className="p-6 text-muted-foreground">Loading...</div>
@@ -159,7 +170,7 @@ export default function TimePage() {
         ) : (
           <div className="space-y-6">
             {Object.entries(groupedEntries).map(([date, dateEntries]) => {
-              const dayTotal = (dateEntries as any[]).reduce((s, e) => s + (e.duration || 0), 0)
+              const dayTotal = dateEntries.reduce((s, e) => s + (e.duration || 0), 0)
               return (
                 <div key={date}>
                   <div className="flex items-center justify-between mb-2">
@@ -167,16 +178,16 @@ export default function TimePage() {
                     <span className="text-xs font-medium text-muted-foreground">{formatDuration(dayTotal)}</span>
                   </div>
                   <div className="space-y-1">
-                    {dateEntries.map((entry: any, i: number) => (
+                    {dateEntries.map((entry, i) => (
                       <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-zinc-100 dark:border-zinc-800 hover:bg-muted/50 transition-colors">
                         <div className="flex items-center gap-3 min-w-0">
                           <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
                           <div className="min-w-0">
-                            <p className="font-medium text-sm truncate">{entry.description || entry.task || 'No description'}</p>
+                            <p className="font-medium text-sm truncate">{entry.description || entry.task?.name || 'No description'}</p>
                             <p className="text-xs text-muted-foreground truncate">{entry.project?.name || 'No project'}</p>
                           </div>
                         </div>
-                        <span className="font-mono text-sm font-medium shrink-0 ml-4">{formatDuration(entry.duration)}</span>
+                        <span className="font-mono text-sm font-medium shrink-0 ml-4">{formatDuration(entry.duration ?? 0)}</span>
                       </div>
                     ))}
                   </div>
