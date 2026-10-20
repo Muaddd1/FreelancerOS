@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { ArrowLeft, Edit, Trash2, Printer, Download } from 'lucide-react'
+import type { InvoiceDetail } from '@/types/api'
 
 export default function InvoiceDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [invoice, setInvoice] = React.useState<any>(null)
+  const [invoice, setInvoice] = React.useState<InvoiceDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -40,9 +41,10 @@ export default function InvoiceDetailPage() {
   }
 
   const subtotal = invoice.items?.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0) ?? 0
-  const taxRate = invoice.taxRate || 0
-  const taxAmount = subtotal * (taxRate / 100)
-  const total = subtotal + taxAmount
+  // tax and discount are stored as amounts (see invoices/new), total as saved
+  const taxAmount = invoice.tax || 0
+  const discount = invoice.discount || 0
+  const total = invoice.total ?? subtotal + taxAmount - discount
 
   return (
     <div className="p-6 space-y-6">
@@ -124,7 +126,7 @@ export default function InvoiceDetailPage() {
               </tr>
             </thead>
             <tbody>
-              {invoice.items?.map((item: any, idx: number) => (
+              {invoice.items?.map((item, idx) => (
                 <tr key={idx} className="border-t border-border">
                   <td className="py-2.5">{item.description}</td>
                   <td className="py-2.5 text-right">{item.quantity}</td>
@@ -144,10 +146,16 @@ export default function InvoiceDetailPage() {
             <span className="text-muted-foreground">Subtotal</span>
             <span>{formatCurrency(subtotal)}</span>
           </div>
-          {taxRate > 0 && (
+          {taxAmount > 0 && (
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Tax ({taxRate}%)</span>
+              <span className="text-muted-foreground">Tax</span>
               <span>{formatCurrency(taxAmount)}</span>
+            </div>
+          )}
+          {discount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Discount</span>
+              <span>-{formatCurrency(discount)}</span>
             </div>
           )}
           <div className="flex justify-between font-medium border-t border-border pt-2">
@@ -157,13 +165,6 @@ export default function InvoiceDetailPage() {
         </div>
       </div>
 
-      {/* Notes */}
-      {invoice.notes && (
-        <div>
-          <h2 className="text-sm font-medium mb-2">Notes</h2>
-          <p className="text-sm text-muted-foreground">{invoice.notes}</p>
-        </div>
-      )}
     </div>
   )
 }
