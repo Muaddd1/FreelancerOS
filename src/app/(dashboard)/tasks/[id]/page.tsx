@@ -7,12 +7,13 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatDate, formatDuration } from '@/lib/utils'
-import { ArrowLeft, Edit, Trash2, Clock, Calendar, User } from 'lucide-react'
+import { ArrowLeft, Edit, Trash2, Clock, Calendar } from 'lucide-react'
+import type { TaskDetail } from '@/types/api'
 
 export default function TaskDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [task, setTask] = React.useState<any>(null)
+  const [task, setTask] = React.useState<TaskDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -98,11 +99,11 @@ export default function TaskDetailPage() {
             <span>{formatDate(task.dueDate)}</span>
           </div>
         )}
-        {task.assignee && (
+        {task.estimatedHours != null && (
           <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-muted-foreground" />
-            <span className="text-muted-foreground">Assigned to</span>
-            <span>{task.assignee}</span>
+            <Clock className="w-4 h-4 text-muted-foreground" />
+            <span className="text-muted-foreground">Estimate</span>
+            <span>{task.estimatedHours}h</span>
           </div>
         )}
         <div className="flex items-center gap-2">
@@ -119,12 +120,12 @@ export default function TaskDetailPage() {
           {task.timeEntries?.length === 0 ? (
             <p className="text-sm text-muted-foreground">No time entries yet</p>
           ) : (
-            task.timeEntries?.map((entry: any) => (
+            task.timeEntries?.map((entry) => (
               <div key={entry.id} className="border-b border-border py-3 last:border-0">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-sm font-medium">{entry.description || 'No description'}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(entry.date)}</p>
+                    <p className="text-xs text-muted-foreground">{formatDate(entry.startTime)}</p>
                   </div>
                   <span className="text-sm font-medium">{entry.duration}m</span>
                 </div>

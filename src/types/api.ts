@@ -27,3 +27,8 @@ export type InvoiceDetail = Jsonify<Invoice> & {
   project?: Jsonify<Project> | null
   items?: Jsonify<InvoiceItem>[]
 }
+
+export type TaskDetail = Jsonify<Task> & {
+  project?: Jsonify<Project> | null
+  timeEntries?: Jsonify<TimeEntry>[]
+}
