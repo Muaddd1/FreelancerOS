@@ -32,3 +32,5 @@ export type TaskDetail = Jsonify<Task> & {
   project?: Jsonify<Project> | null
   timeEntries?: Jsonify<TimeEntry>[]
 }
+
+export type ContractDetail = Jsonify<Contract> & { client?: Jsonify<Client> | null }

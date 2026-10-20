@@ -9,32 +9,33 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { ArrowLeft, Edit, Send, Download, CheckCircle } from 'lucide-react'
+import type { ContractDetail } from '@/types/api'
 
 export default function ContractDetailPage() {
   const params = useParams()
-  const [contract, setContract] = React.useState<any>(null)
+  const [contract, setContract] = React.useState<ContractDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    fetch(`/api/contracts/${params.id}`).then(r => r.json()).then(d => { setContract(d); setLoading(false) }).catch(() => setLoading(false))
+    fetch(`/api/contracts/${params.id}`).then(r => (r.ok ? r.json() : null)).then(d => { setContract(d); setLoading(false) }).catch(() => setLoading(false))
   }, [params.id])
 
-  const handleSend = async () => {
-    await fetch(`/api/contracts/${params.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'SENT' }) })
-    toast.success('Contract sent')
-    setContract((p: any) => ({ ...p, status: 'SENT' }))
+  const updateStatus = async (status: 'SENT' | 'SIGNED', message: string) => {
+    const stamp = new Date().toISOString()
+    const patch = status === 'SENT' ? { status, sentAt: stamp } : { status, signedAt: stamp }
+    // the [id] route only implements PUT (a partial prisma update), not PATCH
+    const res = await fetch(`/api/contracts/${params.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patch) })
+    if (!res.ok) return toast.error('Failed to update contract')
+    toast.success(message)
+    setContract((p) => (p ? { ...p, ...patch } : p))
   }
-
-  const handleSigned = async () => {
-    await fetch(`/api/contracts/${params.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'SIGNED' }) })
-    toast.success('Contract marked as signed')
-    setContract((p: any) => ({ ...p, status: 'SIGNED' }))
-  }
+  const handleSend = () => updateStatus('SENT', 'Contract sent')
+  const handleSigned = () => updateStatus('SIGNED', 'Contract marked as signed')
 
   const statusColors: Record<string, string> = { DRAFT: 'bg-gray-500', SENT: 'bg-blue-500', SIGNED: 'bg-green-500', EXPIRED: 'bg-red-500' }
 
   if (loading) return <div className="p-6 text-muted-foreground">Loading...</div>
-  if (!contract || contract.error) return <div className="p-6 text-destructive">Contract not found</div>
+  if (!contract) return <div className="p-6 text-destructive">Contract not found</div>
 
   return (
     <div className="p-6 space-y-6">
@@ -57,10 +58,10 @@ export default function ContractDetailPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Value</p><p className="text-2xl font-bold">{formatCurrency(contract.value || 0)}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Value</p><p className="text-2xl font-bold">{formatCurrency(contract.total || 0)}</p></CardContent></Card>
         <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Status</p><Badge className={`mt-1 ${statusColors[contract.status] || 'bg-gray-500'}`}>{contract.status}</Badge></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Start Date</p><p className="text-lg font-medium">{formatDate(contract.startDate)}</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">End Date</p><p className="text-lg font-medium">{formatDate(contract.endDate)}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Sent</p><p className="text-lg font-medium">{contract.sentAt ? formatDate(contract.sentAt) : '—'}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-sm text-muted-foreground">Expires</p><p className="text-lg font-medium">{contract.expiresAt ? formatDate(contract.expiresAt) : '—'}</p></CardContent></Card>
       </div>
 
       <Card>
