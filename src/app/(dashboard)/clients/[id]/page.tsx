@@ -8,12 +8,13 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import type { ClientDetail } from '@/types/api'
 import { ArrowLeft, Edit, Trash2, Mail, Phone, Globe, Building2 } from 'lucide-react'
 
 export default function ClientDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [client, setClient] = React.useState<any>(null)
+  const [client, setClient] = React.useState<ClientDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -35,8 +36,8 @@ export default function ClientDetailPage() {
 
   const totalRevenue = client.invoices?.reduce((sum: number, inv: any) => sum + (inv.paid || 0), 0) ?? 0
   const totalInvoices = client.invoices?.length ?? 0
-  const paidInvoices = client.invoices?.filter((inv: any) => inv.status === 'PAID').length ?? 0
-  const pendingInvoices = client.invoices?.filter((inv: any) => inv.status !== 'PAID').length ?? 0
+  const paidInvoices = client.invoices?.filter((inv) => inv.status === 'PAID').length ?? 0
+  const pendingInvoices = client.invoices?.filter((inv) => inv.status !== 'PAID').length ?? 0
 
   const statusVariant = client.status === 'ACTIVE' ? 'success' : 'secondary'
 
@@ -135,7 +136,7 @@ export default function ClientDetailPage() {
             {client.projects?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No projects yet</p>
             ) : (
-              client.projects?.map((project: any) => (
+              client.projects?.map((project) => (
                 <div key={project.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
@@ -159,7 +160,7 @@ export default function ClientDetailPage() {
             {client.invoices?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No invoices yet</p>
             ) : (
-              client.invoices?.map((invoice: any) => (
+              client.invoices?.map((invoice) => (
                 <div key={invoice.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
@@ -186,7 +187,7 @@ export default function ClientDetailPage() {
             {client.proposals?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No proposals yet</p>
             ) : (
-              client.proposals?.map((proposal: any) => (
+              client.proposals?.map((proposal) => (
                 <div key={proposal.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
@@ -210,16 +211,16 @@ export default function ClientDetailPage() {
             {client.contracts?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No contracts yet</p>
             ) : (
-              client.contracts?.map((contract: any) => (
+              client.contracts?.map((contract) => (
                 <div key={contract.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
                       <Link href={`/contracts/${contract.id}`} className="font-medium hover:underline">
-                        {contract.title}
+                        {contract.name}
                       </Link>
-                      <p className="text-sm text-muted-foreground">{formatDate(contract.startDate)} - {formatDate(contract.endDate)}</p>
+                      <p className="text-sm text-muted-foreground">{contract.signedAt ? `Signed ${formatDate(contract.signedAt)}` : contract.expiresAt ? `Expires ${formatDate(contract.expiresAt)}` : `Created ${formatDate(contract.createdAt)}`}</p>
                     </div>
-                    <Badge variant={contract.status === 'ACTIVE' ? 'success' : 'secondary'}>
+                    <Badge variant={contract.status === 'SIGNED' ? 'success' : 'secondary'}>
                       {contract.status}
                     </Badge>
                   </div>
@@ -234,11 +235,11 @@ export default function ClientDetailPage() {
             {client.activities?.length === 0 ? (
               <p className="text-sm text-muted-foreground">No activity yet</p>
             ) : (
-              client.activities?.map((activity: any) => (
+              client.activities?.map((activity) => (
                 <div key={activity.id} className="border-b border-border py-3 last:border-0">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-sm font-medium">{activity.title}</p>
+                      <p className="text-sm font-medium">{activity.type.replace(/_/g, ' ')}</p>
                       <p className="text-xs text-muted-foreground">{activity.description}</p>
                     </div>
                     <span className="text-xs text-muted-foreground">{formatDate(activity.createdAt)}</span>
