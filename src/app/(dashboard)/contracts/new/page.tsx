@@ -41,7 +41,14 @@ export default function NewContractPage() {
       const res = await fetch('/api/contracts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, value: parseFloat(form.value) || 0 }),
+        body: JSON.stringify({
+          name: form.title,
+          clientId: form.clientId,
+          status: form.status,
+          content: form.description,
+          expiresAt: form.endDate,
+          total: parseFloat(form.value) || 0,
+        }),
       })
       if (res.ok) {
         toast.success('Contract created')
