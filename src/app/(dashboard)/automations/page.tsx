@@ -17,7 +17,7 @@ export default function AutomationsPage() {
   }, [])
 
   const handleToggle = async (id: string, enabled: boolean) => {
-    await fetch(`/api/automations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) })
+    await fetch(`/api/automations/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) })
     toast.success(enabled ? 'Automation enabled' : 'Automation disabled')
     setAutomations(automations.map(a => a.id === id ? { ...a, enabled } : a))
   }

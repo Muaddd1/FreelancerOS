@@ -1,0 +1,21 @@
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/db'
+
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  try {
+    const data = await req.json()
+    const automation = await prisma.automation.update({ where: { id: params.id }, data })
+    return NextResponse.json(automation)
+  } catch {
+    return NextResponse.json({ error: 'Failed to update' }, { status: 500 })
+  }
+}
+
+export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+  try {
+    await prisma.automation.delete({ where: { id: params.id } })
+    return NextResponse.json({ success: true })
+  } catch {
+    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 })
+  }
+}
