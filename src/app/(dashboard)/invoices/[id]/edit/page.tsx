@@ -52,12 +52,12 @@ export default function EditInvoicePage() {
           setForm({
             number: d.number || '',
             clientId: d.clientId || d.client?.id || '',
-            issueDate: d.issueDate || '',
-            dueDate: d.dueDate || '',
+            issueDate: d.issueDate?.slice(0, 10) || '',
+            dueDate: d.dueDate?.slice(0, 10) || '',
             status: d.status || 'DRAFT',
             notes: d.notes || '',
           })
-          setItems(d.items?.length ? d.items : [{ description: '', quantity: 1, price: 0 }])
+          setItems(d.items?.length ? d.items.map((i: { name: string; description: string | null; quantity: number; price: number }) => ({ description: i.description || i.name, quantity: i.quantity, price: i.price })) : [{ description: '', quantity: 1, price: 0 }])
         }
         setFetching(false)
       })
