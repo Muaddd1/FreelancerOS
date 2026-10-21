@@ -58,7 +58,7 @@ export default function EditTaskPage() {
       const res = await fetch(`/api/tasks/${params.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, name: form.title }),
       })
       if (res.ok) {
         toast.success('Task updated')

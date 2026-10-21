@@ -40,7 +40,7 @@ export default function NewTaskPage() {
       const res = await fetch('/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, name: form.title }),
       })
       if (res.ok) {
         toast.success('Task created')
