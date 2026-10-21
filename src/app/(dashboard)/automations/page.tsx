@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { Plus, Zap, Edit, Trash2 } from 'lucide-react'
+import type { Automation } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 export default function AutomationsPage() {
-  const [automations, setAutomations] = React.useState<any[]>([])
+  const [automations, setAutomations] = React.useState<Jsonify<Automation>[]>([])
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -17,14 +19,16 @@ export default function AutomationsPage() {
   }, [])
 
   const handleToggle = async (id: string, enabled: boolean) => {
-    await fetch(`/api/automations/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) })
+    const res = await fetch(`/api/automations/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) })
+    if (!res.ok) return toast.error('Failed to update automation')
     toast.success(enabled ? 'Automation enabled' : 'Automation disabled')
     setAutomations(automations.map(a => a.id === id ? { ...a, enabled } : a))
   }
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this automation?')) return
-    await fetch(`/api/automations/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/automations/${id}`, { method: 'DELETE' })
+    if (!res.ok) return toast.error('Failed to delete automation')
     toast.success('Automation deleted')
     setAutomations(automations.filter(a => a.id !== id))
   }
