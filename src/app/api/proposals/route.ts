@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { proposalFields, proposalItems } from '@/lib/proposals'
 
 export async function GET() {
   const proposals = await prisma.proposal.findMany({
@@ -11,12 +12,15 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json()
+    const body = await req.json()
+    const items = proposalItems(body.items)
     const proposal = await prisma.proposal.create({
       data: {
-        ...data,
-        workspaceId: data.workspaceId || 'demo-workspace',
-        userId: data.userId || 'demo-user',
+        ...proposalFields(body),
+        name: body.name,
+        workspaceId: body.workspaceId || 'demo-workspace',
+        userId: body.userId || 'demo-user',
+        ...(items && { items: { create: items } }),
       },
       include: { client: true, items: true },
     })

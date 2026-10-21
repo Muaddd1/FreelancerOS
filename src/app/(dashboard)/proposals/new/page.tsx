@@ -61,11 +61,13 @@ export default function NewProposalPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...form,
-          value: parseFloat(form.value) || subtotal,
+          name: form.title,
+          clientId: form.clientId,
+          status: form.status,
+          content: form.description,
+          sentAt: form.sentDate || undefined,
+          total: parseFloat(form.value) || subtotal,
           items,
-          subtotal,
-          total: subtotal,
         }),
       })
       if (res.ok) {
