@@ -46,7 +46,7 @@ export default function TaskDetailPage() {
     URGENT: 'bg-red-500',
   }
 
-  const totalTime = task.timeEntries?.reduce((sum: number, t: any) => sum + (t.duration || 0), 0) ?? 0
+  const totalTime = task.timeEntries?.reduce((sum, t) => sum + (t.duration || 0), 0) ?? 0
 
   return (
     <div className="p-6 space-y-6">

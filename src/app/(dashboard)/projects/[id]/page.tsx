@@ -51,9 +51,9 @@ export default function ProjectDetailPage() {
 
   const taskCount = project.tasks?.length ?? 0
   const progress = taskCount ? Math.round((project.tasks!.filter((t) => t.status === 'DONE').length / taskCount) * 100) : null
-  const totalTime = project.timeEntries?.reduce((sum: number, t: any) => sum + (t.duration || 0), 0) ?? 0
+  const totalTime = project.timeEntries?.reduce((sum, t) => sum + (t.duration || 0), 0) ?? 0
   const totalBudget = project.budget || 0
-  const totalExpenses = project.expenses?.reduce((sum: number, e: any) => sum + (e.amount || 0), 0) ?? 0
+  const totalExpenses = project.expenses?.reduce((sum, e) => sum + (e.amount || 0), 0) ?? 0
 
   return (
     <div className="p-6 space-y-6">
@@ -153,7 +153,7 @@ export default function ProjectDetailPage() {
                         {task.name}
                       </Link>
                       <p className="text-sm text-muted-foreground">
-                        {task.timeEntries?.reduce((sum: number, t: any) => sum + (t.duration || 0), 0) ?? 0}m logged
+                        {task.timeEntries?.reduce((sum, t) => sum + (t.duration || 0), 0) ?? 0}m logged
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

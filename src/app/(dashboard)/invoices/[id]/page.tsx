@@ -40,7 +40,7 @@ export default function InvoiceDetailPage() {
     OVERDUE: 'bg-red-500',
   }
 
-  const subtotal = invoice.items?.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0) ?? 0
+  const subtotal = invoice.items?.reduce((sum, item) => sum + (item.quantity * item.price), 0) ?? 0
   // tax and discount are stored as amounts (see invoices/new), total as saved
   const taxAmount = invoice.tax || 0
   const discount = invoice.discount || 0

@@ -34,7 +34,7 @@ export default function ClientDetailPage() {
   if (loading) return <div className="p-6 text-sm text-muted-foreground">Loading...</div>
   if (!client) return <div className="p-6 text-sm text-muted-foreground">Client not found</div>
 
-  const totalRevenue = client.invoices?.reduce((sum: number, inv: any) => sum + (inv.paid || 0), 0) ?? 0
+  const totalRevenue = client.invoices?.reduce((sum, inv) => sum + (inv.paid || 0), 0) ?? 0
   const totalInvoices = client.invoices?.length ?? 0
   const paidInvoices = client.invoices?.filter((inv) => inv.status === 'PAID').length ?? 0
   const pendingInvoices = client.invoices?.filter((inv) => inv.status !== 'PAID').length ?? 0
