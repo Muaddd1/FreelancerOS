@@ -24,7 +24,7 @@ export default function EditContractPage() {
   React.useEffect(() => {
     fetch('/api/clients').then(r => r.ok ? r.json() : []).then(setClients).catch(() => {})
     fetch(`/api/contracts/${params.id}`).then(r => r.json()).then(d => {
-      if (d.id) setForm({ name: d.name || '', clientId: d.clientId || d.client?.id || '', content: d.content || '', startDate: d.startDate || '', endDate: d.endDate || '', value: d.value?.toString() || '', status: d.status || 'DRAFT' })
+      if (d.id) setForm({ name: d.name || '', clientId: d.clientId || d.client?.id || '', content: d.content || '', startDate: d.startDate || '', endDate: d.expiresAt?.slice(0, 10) || '', value: d.total?.toString() || '', status: d.status || 'DRAFT' })
       setFetching(false)
     }).catch(() => setFetching(false))
   }, [params.id])
@@ -35,7 +35,7 @@ export default function EditContractPage() {
     try {
       const res = await fetch(`/api/contracts/${params.id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, value: parseFloat(form.value) || 0 })
+        body: JSON.stringify({ ...form, expiresAt: form.endDate, total: parseFloat(form.value) || 0 })
       })
       if (res.ok) { toast.success('Contract updated'); router.push(`/contracts/${params.id}`) }
       else toast.error('Failed to update contract')
