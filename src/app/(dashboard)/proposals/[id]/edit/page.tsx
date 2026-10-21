@@ -24,7 +24,7 @@ export default function EditProposalPage() {
   const [projects, setProjects] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
-  const [form, setForm] = React.useState({ name: '', clientId: '', projectId: '', content: '', validUntil: '', status: 'DRAFT' })
+  const [form, setForm] = React.useState({ name: '', clientId: '', projectId: '', content: '', expiresAt: '', status: 'DRAFT' })
   const [items, setItems] = React.useState<LineItem[]>([{ description: '', quantity: 1, price: 0 }])
 
   React.useEffect(() => {
@@ -32,8 +32,8 @@ export default function EditProposalPage() {
     fetch('/api/projects').then(r => r.ok ? r.json() : []).then(setProjects).catch(() => {})
     fetch(`/api/proposals/${params.id}`).then(r => r.json()).then(d => {
       if (d.id) {
-        setForm({ name: d.name || '', clientId: d.clientId || d.client?.id || '', projectId: d.projectId || '', content: d.content || '', validUntil: d.validUntil || '', status: d.status || 'DRAFT' })
-        setItems(d.items?.length ? d.items : [{ description: '', quantity: 1, price: 0 }])
+        setForm({ name: d.name || '', clientId: d.clientId || d.client?.id || '', projectId: d.projectId || '', content: d.content || '', expiresAt: d.expiresAt?.slice(0, 10) || '', status: d.status || 'DRAFT' })
+        setItems(d.items?.length ? d.items.map((i: { name: string; description: string | null; quantity: number; price: number }) => ({ description: i.description || i.name, quantity: i.quantity, price: i.price })) : [{ description: '', quantity: 1, price: 0 }])
       }
       setFetching(false)
     }).catch(() => setFetching(false))
@@ -54,7 +54,7 @@ export default function EditProposalPage() {
     try {
       const res = await fetch(`/api/proposals/${params.id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, items, subtotal, total: subtotal })
+        body: JSON.stringify({ ...form, items, total: subtotal })
       })
       if (res.ok) { toast.success('Proposal updated'); router.push(`/proposals/${params.id}`) }
       else toast.error('Failed to update proposal')
@@ -78,7 +78,7 @@ export default function EditProposalPage() {
                 <div className="space-y-2"><Label>Proposal Name *</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
                 <div className="space-y-2"><Label>Client</Label><Select value={form.clientId} onValueChange={v => setForm({ ...form, clientId: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent></Select></div>
                 <div className="space-y-2"><Label>Related Project</Label><Select value={form.projectId} onValueChange={v => setForm({ ...form, projectId: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{projects.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent></Select></div>
-                <div className="space-y-2"><Label>Valid Until</Label><Input type="date" value={form.validUntil} onChange={e => setForm({ ...form, validUntil: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Valid Until</Label><Input type="date" value={form.expiresAt} onChange={e => setForm({ ...form, expiresAt: e.target.value })} /></div>
                 <div className="space-y-2"><Label>Status</Label><Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="DRAFT">Draft</SelectItem><SelectItem value="SENT">Sent</SelectItem><SelectItem value="ACCEPTED">Accepted</SelectItem><SelectItem value="REJECTED">Rejected</SelectItem></SelectContent></Select></div>
               </div>
               <div className="space-y-2"><Label>Content</Label><Textarea value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} rows={5} /></div>
