@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { lineItems, toData } from '@/lib/prisma-data'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const invoice = await prisma.invoice.findUnique({
@@ -19,7 +20,11 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
     const data = await req.json()
-    const invoice = await prisma.invoice.update({ where: { id: params.id }, data })
+    const items = lineItems(data.items)
+    const invoice = await prisma.invoice.update({
+      where: { id: params.id },
+      data: { ...toData('Invoice', data), ...(items && { items: { deleteMany: {}, create: items } }) },
+    })
     return NextResponse.json(invoice)
   } catch {
     return NextResponse.json({ error: 'Failed to update' }, { status: 500 })

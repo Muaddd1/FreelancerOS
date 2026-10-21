@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { lineItems, toData } from '@/lib/prisma-data'
 
 export async function GET() {
   const invoices = await prisma.invoice.findMany({
@@ -17,11 +18,13 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const data = await req.json()
+    const items = lineItems(data.items)
     const invoice = await prisma.invoice.create({
       data: {
-        ...data,
+        ...toData('Invoice', data),
         workspaceId: data.workspaceId || 'demo-workspace',
         userId: data.userId || 'demo-user',
+        ...(items && { items: { create: items } }),
       },
       include: { client: true, items: true },
     })

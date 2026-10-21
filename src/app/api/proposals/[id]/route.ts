@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { proposalFields, proposalItems } from '@/lib/proposals'
+import { proposalFields } from '@/lib/proposals'
+import { lineItems } from '@/lib/prisma-data'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const proposal = await prisma.proposal.findUnique({
@@ -14,7 +15,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
     const body = await req.json()
-    const items = proposalItems(body.items)
+    const items = lineItems(body.items)
     const proposal = await prisma.proposal.update({
       where: { id: params.id },
       data: { ...proposalFields(body), ...(items && { items: { deleteMany: {}, create: items } }) },
