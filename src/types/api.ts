@@ -1,4 +1,4 @@
-import type { Activity, Automation, Client, Contract, Expense, File, Invoice, InvoiceItem, Lead, Project, Proposal, ProposalItem, Task, TimeEntry } from '@prisma/client'
+import type { Activity, Client, Contract, Expense, File, Invoice, InvoiceItem, Project, Proposal, ProposalItem, Task, TimeEntry } from '@prisma/client'
 
 // API routes return JSON, so Prisma Date fields arrive as ISO strings.
 export type Jsonify<T> = {

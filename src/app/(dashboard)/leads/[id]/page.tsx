@@ -7,12 +7,14 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
-import { ArrowLeft, Edit, Trash2, Mail, Phone, Globe, Building2 } from 'lucide-react'
+import type { Lead } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
+import { ArrowLeft, Edit, Trash2, Mail, Phone, Building2 } from 'lucide-react'
 
 export default function LeadDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [lead, setLead] = React.useState<any>(null)
+  const [lead, setLead] = React.useState<Jsonify<Lead> | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -87,12 +89,6 @@ export default function LeadDetailPage() {
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Phone className="w-4 h-4" />
             <span>{lead.phone}</span>
-          </div>
-        )}
-        {lead.website && (
-          <div className="flex items-center gap-1.5 text-muted-foreground">
-            <Globe className="w-4 h-4" />
-            <span>{lead.website}</span>
           </div>
         )}
         {lead.company && (
