@@ -42,7 +42,7 @@ export default function NewExpensePage() {
       const res = await fetch('/api/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, amount: parseFloat(form.amount) || 0 }),
+        body: JSON.stringify({ ...form, name: form.description, note: form.notes, date: form.date || new Date().toISOString(), amount: parseFloat(form.amount) || 0 }),
       })
       if (res.ok) {
         toast.success('Expense created')
