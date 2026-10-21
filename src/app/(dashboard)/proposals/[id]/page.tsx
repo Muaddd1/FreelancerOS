@@ -7,12 +7,13 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import type { ProposalDetail } from '@/types/api'
 import { ArrowLeft, Edit, Trash2, ChevronRight } from 'lucide-react'
 
 export default function ProposalDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [proposal, setProposal] = React.useState<any>(null)
+  const [proposal, setProposal] = React.useState<ProposalDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -112,23 +113,23 @@ export default function ProposalDetailPage() {
       </div>
 
       {/* Valid Until */}
-      {proposal.validUntil && (
+      {proposal.expiresAt && (
         <div className="flex items-center gap-2 text-sm">
           <span className="text-muted-foreground">Valid Until</span>
-          <span>{formatDate(proposal.validUntil)}</span>
+          <span>{formatDate(proposal.expiresAt)}</span>
         </div>
       )}
 
       {/* Description */}
-      {proposal.description && (
+      {proposal.content && (
         <div>
           <h2 className="text-sm font-medium mb-2">Description</h2>
-          <p className="text-sm text-muted-foreground whitespace-pre-wrap">{proposal.description}</p>
+          <p className="text-sm text-muted-foreground whitespace-pre-wrap">{proposal.content}</p>
         </div>
       )}
 
       {/* Items */}
-      {proposal.items?.length > 0 && (
+      {(proposal.items?.length ?? 0) > 0 && (
         <div>
           <h2 className="text-sm font-medium mb-3">Items</h2>
           <div className="border-b border-border">
@@ -142,9 +143,9 @@ export default function ProposalDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {proposal.items?.map((item: any, idx: number) => (
+                {proposal.items?.map((item, idx) => (
                   <tr key={idx} className="border-t border-border">
-                    <td className="py-2.5">{item.description}</td>
+                    <td className="py-2.5">{item.name}{item.description && <span className="block text-xs text-muted-foreground">{item.description}</span>}</td>
                     <td className="py-2.5 text-right">{item.quantity}</td>
                     <td className="py-2.5 text-right">{formatCurrency(item.price)}</td>
                     <td className="py-2.5 text-right">{formatCurrency(item.quantity * item.price)}</td>
