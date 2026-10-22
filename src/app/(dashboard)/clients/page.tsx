@@ -9,9 +9,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatCurrency } from '@/lib/utils'
 import { Plus, Search, Users } from 'lucide-react'
+import type { ClientListItem } from '@/types/api'
 
 export default function ClientsPage() {
-  const [clients, setClients] = React.useState<any[]>([])
+  const [clients, setClients] = React.useState<ClientListItem[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 
@@ -82,7 +83,7 @@ export default function ClientsPage() {
             </TableHeader>
             <TableBody>
               {filtered.map(client => {
-                const totalRevenue = client.invoices?.reduce((sum: number, inv: any) => sum + (inv.paid || 0), 0) ?? 0
+                const totalRevenue = client.invoices?.reduce((sum, inv) => sum + (inv.paid || 0), 0) ?? 0
                 return (
                   <TableRow key={client.id}>
                     <TableCell>
