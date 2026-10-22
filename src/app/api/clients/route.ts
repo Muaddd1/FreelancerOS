@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { toData } from '@/lib/prisma-data'
 
 export async function GET() {
   const clients = await prisma.client.findMany({
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
     const data = await req.json()
     const client = await prisma.client.create({
       data: {
-        ...data,
+        ...toData('Client', data),
         workspaceId: data.workspaceId || 'demo-workspace',
         userId: data.userId || 'demo-user',
       },
