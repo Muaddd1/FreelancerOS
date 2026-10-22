@@ -40,3 +40,15 @@ export type ProposalDetail = Jsonify<Proposal> & {
   project?: Jsonify<Project> | null
   items?: Jsonify<ProposalItem>[]
 }
+
+// Shapes returned by the list endpoints (GET /api/projects, GET /api/clients).
+export type ProjectListItem = Jsonify<Project> & {
+  client?: Jsonify<Client> | null
+  tasks?: Pick<Task, 'status'>[]
+  _count?: { tasks?: number; invoices?: number }
+}
+
+export type ClientListItem = Jsonify<Client> & {
+  invoices?: Pick<Invoice, 'total' | 'paid'>[]
+  _count?: { projects?: number; invoices?: number }
+}

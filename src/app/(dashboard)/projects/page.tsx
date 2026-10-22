@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress'
 import { Input } from '@/components/ui/input'
 import { formatCurrency } from '@/lib/utils'
 import { Plus, Search, FolderOpen } from 'lucide-react'
+import type { ProjectListItem } from '@/types/api'
 
 const statusVariant: Record<string, 'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'info' | 'outline'> = {
   ACTIVE: 'success',
@@ -25,7 +26,7 @@ const priorityVariant: Record<string, 'secondary' | 'warning' | 'destructive'> =
 }
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = React.useState<any[]>([])
+  const [projects, setProjects] = React.useState<ProjectListItem[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 
@@ -98,8 +99,8 @@ export default function ProjectsPage() {
                   </Badge>
                 </div>
 
-                {project.progress !== undefined && (
-                  <Progress value={project.progress} className="h-1" />
+                {!!project.tasks?.length && (
+                  <Progress value={Math.round((project.tasks.filter((t) => t.status === 'DONE').length / project.tasks.length) * 100)} className="h-1" />
                 )}
 
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
