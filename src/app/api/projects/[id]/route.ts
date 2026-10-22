@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { toData } from '@/lib/prisma-data'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const project = await prisma.project.findUnique({
@@ -22,7 +23,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
     const data = await req.json()
-    const project = await prisma.project.update({ where: { id: params.id }, data })
+    const project = await prisma.project.update({ where: { id: params.id }, data: toData('Project', data) })
     return NextResponse.json(project)
   } catch {
     return NextResponse.json({ error: 'Failed to update' }, { status: 500 })
