@@ -12,11 +12,12 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { ArrowLeft } from 'lucide-react'
+import type { ClientListItem } from '@/types/api'
 
 export default function EditContractPage() {
   const router = useRouter()
   const params = useParams()
-  const [clients, setClients] = React.useState<any[]>([])
+  const [clients, setClients] = React.useState<ClientListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
   const [form, setForm] = React.useState({ name: '', clientId: '', content: '', startDate: '', endDate: '', value: '', status: 'DRAFT' })
