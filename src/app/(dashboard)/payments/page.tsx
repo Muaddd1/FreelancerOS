@@ -5,9 +5,11 @@ import { DashboardHeader } from '@/components/dashboard'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { DollarSign } from 'lucide-react'
+import type { Client, Invoice, Payment } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 export default function PaymentsPage() {
-  const [payments, setPayments] = React.useState<any[]>([])
+  const [payments, setPayments] = React.useState<(Jsonify<Payment> & { invoice?: Jsonify<Invoice> | null; client?: Jsonify<Client> | null })[]>([])
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {

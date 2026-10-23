@@ -5,9 +5,11 @@ import { DashboardHeader } from '@/components/dashboard'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/lib/utils'
 import { MessageSquare } from 'lucide-react'
+import type { Client, Message, Project } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 export default function MessagesPage() {
-  const [messages, setMessages] = React.useState<any[]>([])
+  const [messages, setMessages] = React.useState<(Jsonify<Message> & { client?: Jsonify<Client> | null; project?: Jsonify<Project> | null })[]>([])
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
