@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Plus, Trash2, ArrowLeft } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import type { ClientListItem } from '@/types/api'
 
 interface LineItem {
   description: string
@@ -24,7 +25,7 @@ interface LineItem {
 export default function EditInvoicePage() {
   const router = useRouter()
   const params = useParams()
-  const [clients, setClients] = React.useState<any[]>([])
+  const [clients, setClients] = React.useState<ClientListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
   const [form, setForm] = React.useState({
