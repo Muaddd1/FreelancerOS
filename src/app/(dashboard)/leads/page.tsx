@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatCurrency } from '@/lib/utils'
 import { Plus, Search, Users } from 'lucide-react'
+import type { Lead } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 const statusVariant: Record<string, 'info' | 'warning' | 'success' | 'destructive'> = {
   NEW: 'info',
@@ -18,7 +20,7 @@ const statusVariant: Record<string, 'info' | 'warning' | 'success' | 'destructiv
 }
 
 export default function LeadsPage() {
-  const [leads, setLeads] = React.useState<any[]>([])
+  const [leads, setLeads] = React.useState<Jsonify<Lead>[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 

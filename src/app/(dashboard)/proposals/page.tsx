@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Plus, Search, FileText } from 'lucide-react'
+import type { ProposalDetail } from '@/types/api'
 
 const statusVariant: Record<string, 'secondary' | 'info' | 'success' | 'destructive'> = {
   DRAFT: 'secondary',
@@ -18,7 +19,7 @@ const statusVariant: Record<string, 'secondary' | 'info' | 'success' | 'destruct
 }
 
 export default function ProposalsPage() {
-  const [proposals, setProposals] = React.useState<any[]>([])
+  const [proposals, setProposals] = React.useState<ProposalDetail[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 

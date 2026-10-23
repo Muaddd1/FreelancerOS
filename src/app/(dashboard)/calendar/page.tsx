@@ -6,10 +6,11 @@ import { DashboardHeader } from '@/components/dashboard'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react'
+import type { TaskDetail } from '@/types/api'
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = React.useState(new Date())
-  const [tasks, setTasks] = React.useState<any[]>([])
+  const [tasks, setTasks] = React.useState<TaskDetail[]>([])
 
   React.useEffect(() => {
     fetch('/api/tasks').then(r => r.json()).then(d => setTasks(Array.isArray(d) ? d : [])).catch(() => {})
