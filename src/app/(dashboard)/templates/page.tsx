@@ -6,9 +6,11 @@ import { DashboardHeader } from '@/components/dashboard'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Plus, FileText, Edit, Trash2, Eye } from 'lucide-react'
+import type { Template } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 export default function TemplatesPage() {
-  const [templates, setTemplates] = React.useState<any[]>([])
+  const [templates, setTemplates] = React.useState<Jsonify<Template>[]>([])
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -61,7 +63,7 @@ export default function TemplatesPage() {
                 </Badge>
               </div>
               <h3 className="text-sm font-semibold text-foreground mb-1">{template.name}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-2 mb-4">{template.description || 'No description'}</p>
+              <p className="text-xs text-muted-foreground line-clamp-2 mb-4">{template.content || 'No content'}</p>
               <div className="flex items-center justify-between pt-3 border-t border-zinc-100 dark:border-zinc-800">
                 <Button variant="ghost" size="sm" className="h-8 text-xs gap-1">
                   <Eye className="w-3 h-3" /> Preview
