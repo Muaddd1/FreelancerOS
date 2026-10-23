@@ -21,7 +21,7 @@ export default function ExpensesPage() {
   }, [])
 
   const filtered = expenses.filter(e =>
-    e.description?.toLowerCase().includes(search.toLowerCase()) ||
+    e.name?.toLowerCase().includes(search.toLowerCase()) ||
     e.category?.toLowerCase().includes(search.toLowerCase())
   )
   const totalExpenses = filtered.reduce((sum, e) => sum + (e.amount || 0), 0)
@@ -83,7 +83,7 @@ export default function ExpensesPage() {
                     <Receipt className="w-5 h-5 text-primary" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium truncate">{expense.description}</p>
+                    <p className="font-medium truncate">{expense.name}</p>
                     <p className="text-sm text-muted-foreground">
                       {expense.category}
                       {expense.project?.name ? ` · ${expense.project.name}` : ''}
