@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { formatCurrency } from '@/lib/utils'
+import type { ClientListItem } from '@/types/api'
 
 interface LineItem {
   description: string
@@ -22,7 +23,7 @@ interface LineItem {
 
 export default function NewProposalPage() {
   const router = useRouter()
-  const [clients, setClients] = React.useState<any[]>([])
+  const [clients, setClients] = React.useState<ClientListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [form, setForm] = React.useState({
     title: '',

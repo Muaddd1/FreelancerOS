@@ -14,14 +14,15 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Plus, Trash2, ArrowLeft } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import type { ClientListItem, ProjectListItem } from '@/types/api'
 
 interface LineItem { description: string; quantity: number; price: number }
 
 export default function EditProposalPage() {
   const router = useRouter()
   const params = useParams()
-  const [clients, setClients] = React.useState<any[]>([])
-  const [projects, setProjects] = React.useState<any[]>([])
+  const [clients, setClients] = React.useState<ClientListItem[]>([])
+  const [projects, setProjects] = React.useState<ProjectListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
   const [form, setForm] = React.useState({ name: '', clientId: '', projectId: '', content: '', expiresAt: '', status: 'DRAFT' })
