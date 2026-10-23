@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Plus, Search, FileText } from 'lucide-react'
+import type { InvoiceDetail } from '@/types/api'
 
 const statusVariant: Record<string, 'success' | 'warning' | 'destructive' | 'secondary'> = {
   PAID: 'success',
@@ -18,7 +19,7 @@ const statusVariant: Record<string, 'success' | 'warning' | 'destructive' | 'sec
 }
 
 export default function InvoicesPage() {
-  const [invoices, setInvoices] = React.useState<any[]>([])
+  const [invoices, setInvoices] = React.useState<InvoiceDetail[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 
