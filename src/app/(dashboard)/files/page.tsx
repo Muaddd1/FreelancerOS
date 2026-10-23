@@ -6,9 +6,11 @@ import { DashboardHeader } from '@/components/dashboard'
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/utils'
 import { Upload, File, Download, Trash2, FileText, Image, Film, Archive } from 'lucide-react'
+import type { Client, File as FileRecord, Project } from '@prisma/client'
+import type { Jsonify } from '@/types/api'
 
 export default function FilesPage() {
-  const [files, setFiles] = React.useState<any[]>([])
+  const [files, setFiles] = React.useState<(Jsonify<FileRecord> & { client?: Jsonify<Client> | null; project?: Jsonify<Project> | null })[]>([])
   const [loading, setLoading] = React.useState(true)
   const [uploading, setUploading] = React.useState(false)
 
@@ -41,7 +43,7 @@ export default function FilesPage() {
     setFiles(files.filter(f => f.id !== id))
   }
 
-  const getFileIcon = (type: string) => {
+  const getFileIcon = (type: string | null) => {
     if (type?.startsWith('image')) return <Image className="w-4 h-4 text-muted-foreground" />
     if (type?.startsWith('video')) return <Film className="w-4 h-4 text-muted-foreground" />
     if (type?.includes('zip') || type?.includes('archive')) return <Archive className="w-4 h-4 text-muted-foreground" />
@@ -49,7 +51,8 @@ export default function FilesPage() {
     return <File className="w-4 h-4 text-muted-foreground" />
   }
 
-  const formatSize = (bytes: number) => {
+  const formatSize = (bytes: number | null) => {
+    if (bytes == null) return 'Unknown size'
     if (bytes < 1024) return `${bytes} B`
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
