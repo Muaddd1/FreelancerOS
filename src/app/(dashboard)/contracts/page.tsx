@@ -10,9 +10,10 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Plus, Search, FileText, Edit, Trash2, Eye } from 'lucide-react'
+import type { ContractDetail } from '@/types/api'
 
 export default function ContractsPage() {
-  const [contracts, setContracts] = React.useState<any[]>([])
+  const [contracts, setContracts] = React.useState<ContractDetail[]>([])
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState('')
 
@@ -20,7 +21,7 @@ export default function ContractsPage() {
     fetch('/api/contracts').then(r => r.json()).then(d => { setContracts(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
   }, [])
 
-  const filtered = contracts.filter(c => c.title?.toLowerCase().includes(search.toLowerCase()) || c.client?.name?.toLowerCase().includes(search.toLowerCase()))
+  const filtered = contracts.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.client?.name?.toLowerCase().includes(search.toLowerCase()))
 
   const getStatusBadge = (status: string) => {
     const map: Record<string, { label: string; className: string }> = {
@@ -74,15 +75,15 @@ export default function ContractsPage() {
                     <FileText className="w-5 h-5 text-primary" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium truncate">{c.title}</p>
+                    <p className="font-medium truncate">{c.name}</p>
                     <p className="text-sm text-muted-foreground">{c.client?.name || 'No client'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-6 shrink-0">
                   <div className="text-right hidden sm:block">
-                    <p className="font-medium">{formatCurrency(c.value || 0)}</p>
+                    <p className="font-medium">{formatCurrency(c.total || 0)}</p>
                     <p className="text-xs text-muted-foreground">
-                      {c.startDate ? `Started ${formatDate(c.startDate)}` : 'No start date'}
+                      {c.signedAt ? `Signed ${formatDate(c.signedAt)}` : c.expiresAt ? `Expires ${formatDate(c.expiresAt)}` : `Created ${formatDate(c.createdAt)}`}
                     </p>
                   </div>
                   {getStatusBadge(c.status)}
