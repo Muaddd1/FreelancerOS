@@ -11,11 +11,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import type { ProjectListItem } from '@/types/api'
 
 export default function EditTaskPage() {
   const router = useRouter()
   const params = useParams()
-  const [projects, setProjects] = React.useState<any[]>([])
+  const [projects, setProjects] = React.useState<ProjectListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
   const [form, setForm] = React.useState({
