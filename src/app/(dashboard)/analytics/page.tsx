@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { DashboardHeader } from '@/components/dashboard'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
+import type { AnalyticsStats } from '@/types/api'
 import { DollarSign, TrendingUp, TrendingDown, ArrowRight, Briefcase } from 'lucide-react'
 
 const maxBarHeight = 160
 
 export default function AnalyticsPage() {
-  const [stats, setStats] = React.useState<any>(null)
+  const [stats, setStats] = React.useState<AnalyticsStats | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -19,8 +20,8 @@ export default function AnalyticsPage() {
 
   if (loading) return <div className="p-6 text-muted-foreground">Loading...</div>
 
-  const s = stats || {}
-  const revenueData: { month: string; amount: number }[] = s.revenueByMonth || []
+  const s: Partial<AnalyticsStats> = stats || {}
+  const revenueData = s.revenueByMonth || []
   const maxRevenue = Math.max(1, ...revenueData.map((d) => d.amount))
 
   const profit = (s.totalRevenue || 0) - (s.totalExpenses || 0)
@@ -113,8 +114,8 @@ export default function AnalyticsPage() {
           <CardContent className="px-6 pb-6">
             <div className="space-y-3">
               {Object.entries(s.invoicesByStatus || {}).map(([status, count]) => {
-                const total = Object.values(s.invoicesByStatus || {}).reduce((a: number, b: any) => a + (Number(b) || 0), 0)
-                const pct = total > 0 ? ((Number(count) || 0) / total) * 100 : 0
+                const total = Object.values(s.invoicesByStatus || {}).reduce((a, b) => a + b, 0)
+                const pct = total > 0 ? (count / total) * 100 : 0
                 return (
                   <div key={status} className="flex items-center gap-3">
                     <span className="text-sm text-muted-foreground w-20">{status}</span>

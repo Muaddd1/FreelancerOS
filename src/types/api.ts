@@ -52,3 +52,25 @@ export type ClientListItem = Jsonify<Client> & {
   invoices?: Pick<Invoice, 'total' | 'paid'>[]
   _count?: { projects?: number; invoices?: number }
 }
+
+// GET /api/analytics
+export type AnalyticsStats = {
+  totalClients: number
+  totalProjects: number
+  totalInvoices: number
+  totalRevenue: number
+  totalExpenses: number
+  activeProjects: number
+  pendingInvoices: number
+  recentActivities: Jsonify<Activity>[]
+  profit: number
+  invoicesByStatus: Record<string, number>
+  avgInvoiceValue: number
+  tasksCompleted: number
+  projectsCompleted: number
+  hoursTracked: number
+  revenueByMonth: { month: string; amount: number }[]
+  revenueChange: number | null
+  expensesChange: number | null
+  profitChange: number | null
+}
