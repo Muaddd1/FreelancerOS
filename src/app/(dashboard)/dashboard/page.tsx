@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { DashboardHeader, HeaderSearch, NotificationBell } from '@/components/dashboard'
 import { formatCurrency } from '@/lib/utils'
+import type { AnalyticsStats } from '@/types/api'
 import {
   ArrowRight, Clock, CheckSquare, FileText, AlertCircle, AlertTriangle,
 } from 'lucide-react'
@@ -34,7 +35,7 @@ const deadlines = [
 ]
 
 export default function DashboardPage() {
-  const [stats, setStats] = React.useState<any>(null)
+  const [stats, setStats] = React.useState<AnalyticsStats | null>(null)
 
   React.useEffect(() => {
     fetch('/api/analytics')
