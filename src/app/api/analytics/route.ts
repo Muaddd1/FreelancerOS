@@ -11,6 +11,11 @@ export async function GET() {
     activeProjects,
     pendingInvoices,
     recentActivities,
+    invoiceGroups,
+    invoiceAvg,
+    tasksCompleted,
+    projectsCompleted,
+    trackedTime,
   ] = await Promise.all([
     prisma.client.count(),
     prisma.project.count(),
@@ -20,6 +25,11 @@ export async function GET() {
     prisma.project.count({ where: { status: 'ACTIVE' } }),
     prisma.invoice.count({ where: { status: { in: ['SENT', 'OVERDUE'] } } }),
     prisma.activity.findMany({ orderBy: { createdAt: 'desc' }, take: 10 }),
+    prisma.invoice.groupBy({ by: ['status'], _count: { _all: true } }),
+    prisma.invoice.aggregate({ _avg: { total: true } }),
+    prisma.task.count({ where: { status: 'DONE' } }),
+    prisma.project.count({ where: { status: 'COMPLETED' } }),
+    prisma.timeEntry.aggregate({ _sum: { duration: true } }), // minutes
   ])
 
   return NextResponse.json({
@@ -32,5 +42,10 @@ export async function GET() {
     pendingInvoices,
     recentActivities,
     profit: (totalRevenue._sum.amount || 0) - (totalExpenses._sum.amount || 0),
+    invoicesByStatus: Object.fromEntries(invoiceGroups.map((g) => [g.status, g._count._all])),
+    avgInvoiceValue: invoiceAvg._avg.total || 0,
+    tasksCompleted,
+    projectsCompleted,
+    hoursTracked: Math.round(((trackedTime._sum.duration || 0) / 60) * 10) / 10,
   })
 }
