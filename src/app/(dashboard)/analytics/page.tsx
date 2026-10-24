@@ -7,16 +7,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
 import { DollarSign, TrendingUp, TrendingDown, ArrowRight, Briefcase } from 'lucide-react'
 
-const revenueData = [
-  { month: 'Apr', amount: 4200 },
-  { month: 'May', amount: 5800 },
-  { month: 'Jun', amount: 4900 },
-  { month: 'Jul', amount: 6300 },
-  { month: 'Aug', amount: 7100 },
-  { month: 'Sep', amount: 5400 },
-]
-
-const maxRevenue = Math.max(...revenueData.map(d => d.amount))
 const maxBarHeight = 160
 
 export default function AnalyticsPage() {
@@ -30,6 +20,8 @@ export default function AnalyticsPage() {
   if (loading) return <div className="p-6 text-muted-foreground">Loading...</div>
 
   const s = stats || {}
+  const revenueData: { month: string; amount: number }[] = s.revenueByMonth || []
+  const maxRevenue = Math.max(1, ...revenueData.map((d) => d.amount))
 
   const profit = (s.totalRevenue || 0) - (s.totalExpenses || 0)
   const profitChange = s.profitChange != null ? s.profitChange : null
