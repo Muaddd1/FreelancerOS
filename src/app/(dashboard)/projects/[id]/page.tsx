@@ -157,7 +157,7 @@ export default function ProjectDetailPage() {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={task.status === 'COMPLETED' ? 'success' : 'secondary'}>
+                      <Badge variant={task.status === 'DONE' ? 'success' : 'secondary'}>
                         {task.status}
                       </Badge>
                     </div>
