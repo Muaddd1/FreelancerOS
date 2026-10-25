@@ -38,7 +38,8 @@ export default function ExpensesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this expense?')) return
-    await fetch(`/api/expenses/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/expenses/${id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete expense'); return }
     toast.success('Expense deleted')
     setExpenses(expenses.filter(e => e.id !== id))
   }
