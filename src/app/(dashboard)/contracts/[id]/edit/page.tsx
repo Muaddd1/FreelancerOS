@@ -20,11 +20,13 @@ export default function EditContractPage() {
   const [clients, setClients] = React.useState<ClientListItem[]>([])
   const [loading, setLoading] = React.useState(false)
   const [fetching, setFetching] = React.useState(true)
+  const [stamps, setStamps] = React.useState<{ sentAt?: string; signedAt?: string }>({})
   const [form, setForm] = React.useState({ name: '', clientId: '', content: '', startDate: '', endDate: '', value: '', status: 'DRAFT' })
 
   React.useEffect(() => {
     fetch('/api/clients').then(r => r.ok ? r.json() : []).then(setClients).catch(() => {})
     fetch(`/api/contracts/${params.id}`).then(r => r.json()).then(d => {
+      if (d.id) setStamps({ sentAt: d.sentAt, signedAt: d.signedAt })
       if (d.id) setForm({ name: d.name || '', clientId: d.clientId || d.client?.id || '', content: d.content || '', startDate: d.startDate || '', endDate: d.expiresAt?.slice(0, 10) || '', value: d.total?.toString() || '', status: d.status || 'DRAFT' })
       setFetching(false)
     }).catch(() => setFetching(false))
@@ -36,7 +38,14 @@ export default function EditContractPage() {
     try {
       const res = await fetch(`/api/contracts/${params.id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, expiresAt: form.endDate, total: parseFloat(form.value) || 0 })
+        body: JSON.stringify({
+          ...form,
+          expiresAt: form.endDate,
+          total: parseFloat(form.value) || 0,
+          // same stamps the detail page's Send/Sign buttons set, so picking the status here dates it too
+          ...(form.status === 'SENT' && !stamps.sentAt && { sentAt: new Date().toISOString() }),
+          ...(form.status === 'SIGNED' && !stamps.signedAt && { signedAt: new Date().toISOString() }),
+        })
       })
       if (res.ok) { toast.success('Contract updated'); router.push(`/contracts/${params.id}`) }
       else toast.error('Failed to update contract')
