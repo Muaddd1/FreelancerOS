@@ -25,7 +25,8 @@ export default function ProposalDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this proposal?')) return
-    await fetch(`/api/proposals/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/proposals/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete proposal'); return }
     toast.success('Proposal deleted')
     router.push('/proposals')
   }

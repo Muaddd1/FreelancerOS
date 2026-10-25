@@ -26,7 +26,8 @@ export default function ClientDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this client?')) return
-    await fetch(`/api/clients/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/clients/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete client'); return }
     toast.success('Client deleted')
     router.push('/clients')
   }

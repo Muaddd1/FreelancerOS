@@ -25,7 +25,8 @@ export default function TaskDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this task?')) return
-    await fetch(`/api/tasks/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/tasks/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete task'); return }
     toast.success('Task deleted')
     router.push('/tasks')
   }

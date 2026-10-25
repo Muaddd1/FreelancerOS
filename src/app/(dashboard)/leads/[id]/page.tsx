@@ -26,7 +26,8 @@ export default function LeadDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this lead?')) return
-    await fetch(`/api/leads/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/leads/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete lead'); return }
     toast.success('Lead deleted')
     router.push('/leads')
   }

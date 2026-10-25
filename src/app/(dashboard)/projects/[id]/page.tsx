@@ -27,7 +27,8 @@ export default function ProjectDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this project?')) return
-    await fetch(`/api/projects/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/projects/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete project'); return }
     toast.success('Project deleted')
     router.push('/projects')
   }

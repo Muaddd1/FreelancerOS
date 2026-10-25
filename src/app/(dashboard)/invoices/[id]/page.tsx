@@ -25,7 +25,8 @@ export default function InvoiceDetailPage() {
 
   const handleDelete = async () => {
     if (!confirm('Delete this invoice?')) return
-    await fetch(`/api/invoices/${params.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/invoices/${params.id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete invoice'); return }
     toast.success('Invoice deleted')
     router.push('/invoices')
   }
