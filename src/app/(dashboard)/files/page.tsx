@@ -38,7 +38,8 @@ export default function FilesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this file?')) return
-    await fetch(`/api/files/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/files/${id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete file'); return }
     toast.success('File deleted')
     setFiles(files.filter(f => f.id !== id))
   }

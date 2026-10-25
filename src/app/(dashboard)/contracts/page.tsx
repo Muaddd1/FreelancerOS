@@ -36,7 +36,8 @@ export default function ContractsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this contract?')) return
-    await fetch(`/api/contracts/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/contracts/${id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete contract'); return }
     toast.success('Contract deleted')
     setContracts(contracts.filter(c => c.id !== id))
   }
