@@ -19,7 +19,8 @@ export default function TemplatesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this template?')) return
-    await fetch(`/api/templates/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/templates/${id}`, { method: 'DELETE' })
+    if (!res.ok) { toast.error('Failed to delete template'); return }
     toast.success('Template deleted')
     setTemplates(templates.filter(t => t.id !== id))
   }
