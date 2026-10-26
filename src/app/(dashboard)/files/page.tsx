@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import { DashboardHeader } from '@/components/dashboard'
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/utils'
-import { Upload, File, Download, Trash2, FileText, Image, Film, Archive } from 'lucide-react'
+import { Upload, File, Download, Trash2, FileText, ImageIcon, Film, Archive } from 'lucide-react'
 import type { Client, File as FileRecord, Project } from '@prisma/client'
 import type { Jsonify } from '@/types/api'
 
@@ -45,7 +45,7 @@ export default function FilesPage() {
   }
 
   const getFileIcon = (type: string | null) => {
-    if (type?.startsWith('image')) return <Image className="w-4 h-4 text-muted-foreground" />
+    if (type?.startsWith('image')) return <ImageIcon className="w-4 h-4 text-muted-foreground" />
     if (type?.startsWith('video')) return <Film className="w-4 h-4 text-muted-foreground" />
     if (type?.includes('zip') || type?.includes('archive')) return <Archive className="w-4 h-4 text-muted-foreground" />
     if (type?.includes('pdf') || type?.includes('doc')) return <FileText className="w-4 h-4 text-muted-foreground" />
