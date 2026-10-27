@@ -85,7 +85,7 @@ async function sendLoginEmail(email: string, password: string, isMembership: boo
   if (!process.env.RESEND_API_KEY) return
 
   const product = isMembership ? 'Freelancer OS (Monthly Membership)' : isSourceCode ? 'Freelancer OS (Source Code)' : 'Freelancer OS'
-  const loginUrl = 'https://freelancer-os-gamma.vercel.app/login'
+  const loginUrl = `${process.env.NEXTAUTH_URL ?? 'https://freelancer-os-gamma.vercel.app'}/login`
 
   await resend.emails.send({
     from: 'Freelancer OS <onboarding@resend.dev>',
