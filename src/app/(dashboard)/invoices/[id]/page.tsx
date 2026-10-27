@@ -53,7 +53,7 @@ export default function InvoiceDetailPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" asChild className="h-8 w-8">
-            <Link href="/invoices">
+            <Link href="/invoices" aria-label="Back to invoices">
               <ArrowLeft className="w-4 h-4" />
             </Link>
           </Button>

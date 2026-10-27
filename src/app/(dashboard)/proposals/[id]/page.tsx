@@ -52,7 +52,7 @@ export default function ProposalDetailPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" asChild className="h-8 w-8">
-            <Link href="/proposals">
+            <Link href="/proposals" aria-label="Back to proposals">
               <ArrowLeft className="w-4 h-4" />
             </Link>
           </Button>

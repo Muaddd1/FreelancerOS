@@ -89,8 +89,8 @@ export default function ContractsPage() {
                   </div>
                   {getStatusBadge(c.status)}
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" asChild><Link href={`/contracts/${c.id}`}><Eye className="w-4 h-4" /></Link></Button>
-                    <Button variant="ghost" size="icon" asChild><Link href={`/contracts/${c.id}/edit`}><Edit className="w-4 h-4" /></Link></Button>
+                    <Button variant="ghost" size="icon" asChild><Link href={`/contracts/${c.id}`} aria-label="View contract"><Eye className="w-4 h-4" /></Link></Button>
+                    <Button variant="ghost" size="icon" asChild><Link href={`/contracts/${c.id}/edit`} aria-label="Edit contract"><Edit className="w-4 h-4" /></Link></Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(c.id)} className="text-red-500 hover:text-red-600"><Trash2 className="w-4 h-4" /></Button>
                   </div>
                 </div>
