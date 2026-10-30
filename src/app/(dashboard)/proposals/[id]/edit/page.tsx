@@ -67,7 +67,7 @@ export default function EditProposalPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-4">
-        <Link href={`/proposals/${params.id}`}><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
+        <Link aria-label="Back" href={`/proposals/${params.id}`}><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
         <DashboardHeader title="Edit Proposal" description="Update proposal details" />
       </div>
       <form onSubmit={handleSubmit}>

@@ -40,7 +40,7 @@ export default function ContractDetailPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/contracts"><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
+        <Link aria-label="Back" href="/contracts"><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
         <div className="flex-1">
           <h1 className="text-2xl font-bold">{contract.name}</h1>
           <p className="text-sm text-muted-foreground">{contract.client?.name || 'No client'}</p>

@@ -110,7 +110,7 @@ export default function EditInvoicePage() {
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-4">
         <Link href={`/invoices/${params.id}`}>
-          <Button variant="ghost" size="icon">
+          <Button aria-label="Back" variant="ghost" size="icon">
             <ArrowLeft className="w-4 h-4" />
           </Button>
         </Link>

@@ -57,7 +57,7 @@ export default function EditContractPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-4">
-        <Link href={`/contracts/${params.id}`}><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
+        <Link aria-label="Back" href={`/contracts/${params.id}`}><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
         <DashboardHeader title="Edit Contract" description="Update contract details" />
       </div>
       <form onSubmit={handleSubmit}>

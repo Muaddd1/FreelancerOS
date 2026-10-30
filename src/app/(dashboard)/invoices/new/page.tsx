@@ -109,7 +109,7 @@ export default function NewInvoicePage() {
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <Link href="/invoices">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button aria-label="Back" variant="ghost" size="icon" className="h-8 w-8">
               <ArrowLeft className="w-4 h-4" />
             </Button>
           </Link>
