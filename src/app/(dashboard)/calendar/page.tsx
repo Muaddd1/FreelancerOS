@@ -52,14 +52,14 @@ export default function CalendarPage() {
       <DashboardHeader title="Calendar" description="View tasks and deadlines" />
 
       <div className="flex items-center justify-between">
-        <Button variant="outline" size="icon" className="h-9 w-9" onClick={prevMonth}>
+        <Button aria-label="Previous month" variant="outline" size="icon" className="h-9 w-9" onClick={prevMonth}>
           <ChevronLeft className="w-4 h-4" />
         </Button>
         <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-muted-foreground" />
           {monthName}
         </h2>
-        <Button variant="outline" size="icon" className="h-9 w-9" onClick={nextMonth}>
+        <Button aria-label="Next month" variant="outline" size="icon" className="h-9 w-9" onClick={nextMonth}>
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>

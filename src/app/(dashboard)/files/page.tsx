@@ -92,7 +92,7 @@ export default function FilesPage() {
                 {file.url && <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                   <a href={file.url} target="_blank" rel="noopener noreferrer" aria-label={`Download ${file.name}`}><Download className="w-4 h-4" /></a>
                 </Button>}
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(file.id)}>
+                <Button aria-label="Delete file" variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(file.id)}>
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>

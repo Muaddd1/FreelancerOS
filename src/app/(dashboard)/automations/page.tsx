@@ -71,10 +71,10 @@ export default function AutomationsPage() {
                 <Badge variant={auto.enabled ? 'default' : 'secondary'} className="text-xs">
                   {auto.enabled ? 'Enabled' : 'Disabled'}
                 </Badge>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button aria-label="Edit automation" variant="ghost" size="icon" className="h-8 w-8">
                   <Edit className="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(auto.id)}>
+                <Button aria-label="Delete automation" variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(auto.id)}>
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>

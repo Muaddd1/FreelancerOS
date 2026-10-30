@@ -27,7 +27,7 @@ export function ThemeSwitcher() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="h-9 w-9">
+      <Button aria-label="Toggle theme" variant="ghost" size="icon" className="h-9 w-9">
         <Sun className="w-4 h-4" />
       </Button>
     )

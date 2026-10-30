@@ -99,7 +99,7 @@ export default function ExpensesPage() {
                   {getStatusBadge(expense.status)}
                   <div className="flex items-center gap-1">
                     <Button variant="ghost" size="icon" asChild><Link href={`/expenses/${expense.id}/edit`} aria-label="Edit expense"><Edit className="w-4 h-4" /></Link></Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(expense.id)} className="text-red-500 hover:text-red-600"><Trash2 className="w-4 h-4" /></Button>
+                    <Button aria-label="Delete expense" variant="ghost" size="icon" onClick={() => handleDelete(expense.id)} className="text-red-500 hover:text-red-600"><Trash2 className="w-4 h-4" /></Button>
                   </div>
                 </div>
               </div>

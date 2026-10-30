@@ -70,10 +70,10 @@ export default function TemplatesPage() {
                   <Eye className="w-3 h-3" /> Preview
                 </Button>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Button aria-label="Edit template" variant="ghost" size="icon" className="h-8 w-8">
                     <Edit className="w-3.5 h-3.5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(template.id)}>
+                  <Button aria-label="Delete template" variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600" onClick={() => handleDelete(template.id)}>
                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                 </div>

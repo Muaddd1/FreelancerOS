@@ -242,7 +242,7 @@ export default function NewInvoicePage() {
                   </p>
                 </div>
                 {items.length > 1 && (
-                  <Button
+                  <Button aria-label="Remove line item"
                     type="button"
                     variant="ghost"
                     size="icon"
